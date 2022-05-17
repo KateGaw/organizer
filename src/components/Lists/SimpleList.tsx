@@ -5,6 +5,8 @@
  *  - заголовок (опционально - редактируемый)
  *  - "детали"
  *  - шкала (опционально)
+ *  - сортировка (опционально)
+ *  - чекбоксы (опционально)
  */
 
 import React, { useState } from 'react'
@@ -13,6 +15,7 @@ import styled from 'styled-components'
 import DetailsButton from './DetailsButton'
 import SliderBlock from './Slider'
 import SliderSortBlock from './SliderSortBlock'
+import Checkbox from '../Inputs/Checkbox'
 
 type DataProps = {
   id: string
@@ -26,6 +29,7 @@ type Props = {
   editableTitle?: boolean
   slider?: boolean
   sort?: boolean
+  checkbox?: boolean
 }
 
 const SimpleList = ({
@@ -34,8 +38,10 @@ const SimpleList = ({
   editableTitle = false,
   slider = false,
   sort = false,
+  checkbox = false,
 }: Props) => {
-  const [value, setValue] = useState(data)
+  const [value, setValue] = useState<DataProps[]>(data)
+  const [checked, setChecked] = useState<string[]>([])
 
   const simpleListOnChange = (e: any, id: string) => {
     const currentValue = value.find((i: any) => i.id === id) as DataProps
@@ -66,6 +72,14 @@ const SimpleList = ({
     setValue(output)
   }
 
+  const checkboxOnChange = (e: any) => {
+    if (!checked.includes(e.target.name)) {
+      setChecked([...checked, e.target.name])
+    } else {
+      setChecked(checked.filter((i: string) => i !== e.target.name))
+    }
+  }
+
   return (
     <div>
       {sort && <SliderSortBlock onChange={updateSort} />}
@@ -94,6 +108,17 @@ const SimpleList = ({
               )}
 
               <DetailsButton listId={listId} dataId={item.id} />
+
+              {checkbox && (
+                <CheckboxWrapper>
+                  <Checkbox
+                    name={item.id}
+                    label=""
+                    checked={checked.includes(item.id)}
+                    onChange={checkboxOnChange}
+                  />
+                </CheckboxWrapper>
+              )}
             </ListItem>
           ))}
       </List>
@@ -124,4 +149,8 @@ const ListTitle = styled.div`
 const ListTitleInput = styled.input`
   font-size: 1.5rem;
   line-height: 1.75rem;
+`
+
+const CheckboxWrapper = styled.div`
+  margin-left: 1rem;
 `
