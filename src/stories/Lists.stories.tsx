@@ -64,18 +64,33 @@ export const SimpleListWithSliderAndSortStory = () => {
   return <SimpleList listId="sinpleList" data={data} slider={true} sort={true} />
 }
 
-
 // Простой список первого уровня со шкалой и чекбоксами
 export const SimpleListWithSliderAndCheckboxesStory = () => {
-    const data = [
-      { id: '1', title: 'Задача 1' },
-      { id: '2', title: 'Задача 2' },
-      { id: '3', title: 'Задача 3' },
-      { id: '4', title: 'Задача 4' },
-      { id: '5', title: 'Задача 5' },
-      { id: '6', title: 'Задача 6' },
-      { id: '7', title: 'Задача 7' },
-    ]
-  
-    return <SimpleList listId="sinpleList" data={data} slider={true} checkbox={true} />
-  }
+  const data = [
+    { id: '1', title: 'Задача 1' },
+    { id: '2', title: 'Задача 2' },
+    { id: '3', title: 'Задача 3' },
+    { id: '4', title: 'Задача 4' },
+    { id: '5', title: 'Задача 5' },
+    { id: '6', title: 'Задача 6' },
+    { id: '7', title: 'Задача 7' },
+  ]
+
+  return <SimpleList listId="sinpleList" data={data} slider={true} checkbox={true} />
+}
+
+
+// Простой список первого уровня со шкалой и детализацией
+export const SimpleListWithSliderAndDetails = () => {
+  const data = [
+    { id: '1', title: 'Задача 1', details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua' },
+    { id: '2', title: 'Задача 2', details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit' },
+    { id: '3', title: 'Задача 3', details: 'Lorem ipsum dolor sit amet' },
+    { id: '4', title: 'Задача 4', details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+    { id: '5', title: 'Задача 5', details: 'Lorem' },
+    { id: '6', title: 'Задача 6' },
+    { id: '7', title: 'Задача 7' },
+  ]
+
+  return <SimpleList listId="sinpleList" data={data} slider={true} details={true} />
+}

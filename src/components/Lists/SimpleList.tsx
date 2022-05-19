@@ -13,23 +13,82 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import DetailsButton from './DetailsButton'
+import ListTitleBlock from './ListTitle'
 import SliderBlock from './Slider'
 import SliderSortBlock from './SliderSortBlock'
 import Checkbox from '../Inputs/Checkbox'
+import MainText from '../Typography/Main'
 
-type DataProps = {
-  id: string
-  title: string
-  slider?: number
-}
+import { DataProps, Props, ItemBlockProps } from './types'
 
-type Props = {
-  listId: string
-  data: DataProps[]
-  editableTitle?: boolean
-  slider?: boolean
-  sort?: boolean
-  checkbox?: boolean
+const OneItemBlock = ({
+  item,
+  value,
+  setValue,
+  details,
+  editableTitle,
+  slider,
+  listId,
+  checkbox,
+}: ItemBlockProps) => {
+  const [checked, setChecked] = useState<string[]>([])
+  const [displayDetails, setDisplayDetails] = useState(false)
+
+  const simpleListOnChange = (e: any, id: string) => {
+    const currentValue = value.find((i: any) => i.id === id) as DataProps
+    currentValue.title = e.target.value
+    setValue([...value.filter((i: any) => i.id !== id), currentValue])
+  }
+
+  const checkboxOnChange = (e: any) => {
+    if (!checked.includes(e.target.name)) {
+      setChecked([...checked, e.target.name])
+    } else {
+      setChecked(checked.filter((i: string) => i !== e.target.name))
+    }
+  }
+
+  return (
+    <ListItem>
+      <ListTitleBlock
+        item={item}
+        details={details}
+        editable={editableTitle}
+        onChange={simpleListOnChange}
+        displayDetails={displayDetails}
+        setDisplayDetails={setDisplayDetails}
+      />
+
+      {slider && (
+        <SliderBlock
+          sliderId={`slider_${item.id}`}
+          min={0}
+          max={100}
+          data={value}
+          setData={setValue}
+        />
+      )}
+
+      <DetailsButton listId={listId} dataId={item.id} />
+
+      {checkbox && (
+        <CheckboxWrapper>
+          <Checkbox
+            name={item.id}
+            label=""
+            checked={checked.includes(item.id)}
+            onChange={checkboxOnChange}
+          />
+        </CheckboxWrapper>
+      )}
+
+      {displayDetails && (
+        <DetailsBlock>
+          <MainText title={item?.details || '[no details]'} />
+        </DetailsBlock>
+      )}
+    </ListItem>
+  )
 }
 
 const SimpleList = ({
@@ -39,15 +98,9 @@ const SimpleList = ({
   slider = false,
   sort = false,
   checkbox = false,
+  details = false,
 }: Props) => {
   const [value, setValue] = useState<DataProps[]>(data)
-  const [checked, setChecked] = useState<string[]>([])
-
-  const simpleListOnChange = (e: any, id: string) => {
-    const currentValue = value.find((i: any) => i.id === id) as DataProps
-    currentValue.title = e.target.value
-    setValue([...value.filter((i: any) => i.id !== id), currentValue])
-  }
 
   const updateSort = (type: string) => {
     const output = [] as any
@@ -72,54 +125,23 @@ const SimpleList = ({
     setValue(output)
   }
 
-  const checkboxOnChange = (e: any) => {
-    if (!checked.includes(e.target.name)) {
-      setChecked([...checked, e.target.name])
-    } else {
-      setChecked(checked.filter((i: string) => i !== e.target.name))
-    }
-  }
-
   return (
     <div>
       {sort && <SliderSortBlock onChange={updateSort} />}
       <List id={listId}>
         {value &&
           value.map((item: DataProps) => (
-            <ListItem key={item.id}>
-              {editableTitle ? (
-                <ListTitleInput
-                  type="text"
-                  value={item.title}
-                  onChange={(e: any) => simpleListOnChange(e, item.id)}
-                />
-              ) : (
-                <ListTitle>{item.title}</ListTitle>
-              )}
-
-              {slider && (
-                <SliderBlock
-                  sliderId={`slider_${item.id}`}
-                  min={0}
-                  max={100}
-                  data={value}
-                  setData={setValue}
-                />
-              )}
-
-              <DetailsButton listId={listId} dataId={item.id} />
-
-              {checkbox && (
-                <CheckboxWrapper>
-                  <Checkbox
-                    name={item.id}
-                    label=""
-                    checked={checked.includes(item.id)}
-                    onChange={checkboxOnChange}
-                  />
-                </CheckboxWrapper>
-              )}
-            </ListItem>
+            <OneItemBlock
+              key={item.id}
+              item={item}
+              value={value}
+              setValue={setValue}
+              details={details}
+              editableTitle={editableTitle}
+              slider={slider}
+              listId={listId}
+              checkbox={checkbox}
+            />
           ))}
       </List>
     </div>
@@ -136,21 +158,15 @@ const List = styled.div`
 const ListItem = styled.div`
   display: flex;
   align-items: center;
+  flex-flow: wrap;
   width: 100%;
   margin: 0.625rem 0;
 `
 
-const ListTitle = styled.div`
-  font-size: 1.5rem;
-  line-height: 1.75rem;
-  cursor: default;
-`
-
-const ListTitleInput = styled.input`
-  font-size: 1.5rem;
-  line-height: 1.75rem;
-`
-
 const CheckboxWrapper = styled.div`
   margin-left: 1rem;
+`
+
+const DetailsBlock = styled.div`
+  width: 80%;
 `
