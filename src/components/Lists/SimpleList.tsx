@@ -35,9 +35,7 @@ const OneItemBlock = ({
   const [displayDetails, setDisplayDetails] = useState(false)
 
   const simpleListOnChange = (e: any, id: string) => {
-    const currentValue = value.find((i: any) => i.id === id) as DataProps
-    currentValue.title = e.target.value
-    setValue([...value.filter((i: any) => i.id !== id), currentValue])
+    setValue(value.map((i: any) => (i.id === id ? { ...i, title: e.target.value } : i)))
   }
 
   const checkboxOnChange = (e: any) => {
