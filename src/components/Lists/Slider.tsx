@@ -60,8 +60,8 @@ export default SliderBlock
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 25rem;
-  margin: 3rem 2rem;
+  width: 16rem;
+  margin: 0.5rem 2rem;
 `
 
 const Input = styled.input`

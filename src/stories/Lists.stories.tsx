@@ -76,7 +76,7 @@ export const SimpleListWithSliderAndCheckboxesStory = () => {
     { id: '7', title: 'Задача 7' },
   ]
 
-  return <SimpleList listId="sinpleList" data={data} slider={true} checkbox={true} />
+  return <SimpleList listId="sinpleList" data={data} editableTitle={true} slider={true} checkbox={true} />
 }
 
 

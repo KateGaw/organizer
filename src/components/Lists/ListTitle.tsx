@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { TitleBlockProps } from './types'
 
@@ -10,6 +10,16 @@ const ListTitleBlock = ({
   displayDetails,
   setDisplayDetails,
 }: TitleBlockProps) => {
+  const textareaRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = '0px'
+      const scrollHeight = textareaRef.current.scrollHeight
+      textareaRef.current.style.height = scrollHeight + 'px'
+    }
+  }, [item.title])
+
   return (
     <ListTitleWrapper>
       {details && (
@@ -22,7 +32,8 @@ const ListTitleBlock = ({
 
       {editable ? (
         <ListTitleInput
-          type="text"
+          // @ts-ignore
+          ref={textareaRef}
           value={item.title}
           onChange={(e: any) => onChange(e, item.id)}
         />
@@ -47,9 +58,15 @@ const ListTitleWrapper = styled.div`
   align-items: center;
 `
 
-const ListTitleInput = styled.input`
-  font-size: 1.5rem;
-  line-height: 1.75rem;
+const ListTitleInput = styled.textarea`
+  width: 30rem;
+  padding: 0.25rem;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  border: 0.5px solid black;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  resize: none;
 `
 
 const TitleDetailsButton = styled.img<{ direction: string }>`
