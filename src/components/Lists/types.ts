@@ -17,6 +17,8 @@ export type Props = {
   displayParent?: boolean
 }
 
+export type ListTypes = 'first' | 'second' | 'third'
+
 export type TitleBlockProps = {
   item: DataProps
   details: boolean
@@ -24,6 +26,7 @@ export type TitleBlockProps = {
   onChange: (e: any, id: string) => void
   displayDetails: boolean
   setDisplayDetails: React.Dispatch<React.SetStateAction<boolean>>
+  listType?: ListTypes
 }
 
 export type ItemBlockProps = {

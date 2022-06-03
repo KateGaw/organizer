@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { TitleBlockProps } from './types'
+import { TitleBlockProps, ListTypes } from './types'
+import StepTitleText, { first, second, third } from '../Typography/StepTitle'
 
 const ListTitleBlock = ({
   item,
@@ -9,6 +10,7 @@ const ListTitleBlock = ({
   onChange,
   displayDetails,
   setDisplayDetails,
+  listType = 'first',
 }: TitleBlockProps) => {
   const textareaRef = useRef<HTMLInputElement>(null)
 
@@ -36,9 +38,12 @@ const ListTitleBlock = ({
           ref={textareaRef}
           value={item.title}
           onChange={(e: any) => onChange(e, item.id)}
+          type={listType}
         />
       ) : (
-        <ListTitle>{item.title}</ListTitle>
+        <ListWrapper>
+          <StepTitleText title={item.title} type={listType} />
+        </ListWrapper>
       )}
     </ListTitleWrapper>
   )
@@ -46,10 +51,8 @@ const ListTitleBlock = ({
 
 export default ListTitleBlock
 
-const ListTitle = styled.div`
+const ListWrapper = styled.div`
   width: 30rem;
-  font-size: 1.5rem;
-  line-height: 1.75rem;
   cursor: default;
 `
 
@@ -59,15 +62,26 @@ const ListTitleWrapper = styled.div`
   align-items: center;
 `
 
-const ListTitleInput = styled.textarea`
+const ListTitleInput = styled.textarea<{ type: ListTypes }>`
   width: 30rem;
   padding: 0.25rem;
-  font-size: 1.25rem;
-  line-height: 1.5rem;
   border: 0.5px solid black;
   border-radius: 0.25rem;
   background-color: transparent;
   resize: none;
+
+  ${(props) => {
+    switch (props.type) {
+      case 'first':
+        return first
+      case 'second':
+        return second
+      case 'third':
+        return third
+      default:
+        break
+    }
+  }}
 `
 
 const TitleDetailsButton = styled.img<{ direction: string }>`

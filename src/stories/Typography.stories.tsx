@@ -20,9 +20,6 @@ export const Variants = () => (
       <SessionDescriptionText title="Описание сессии" />
     </div>
     <div style={{ padding: 20 }}>
-      <StepTitleText title="Название шага" />
-    </div>
-    <div style={{ padding: 20 }}>
       <InstructionTitleText title="Заголовок инструкции" />
     </div>
     <div style={{ padding: 20 }}>
@@ -30,6 +27,20 @@ export const Variants = () => (
     </div>
     <div style={{ padding: 20 }}>
       <MainText title="Основной текст" />
+    </div>
+  </div>
+)
+
+export const ListsTypography = () => (
+  <div>
+    <div style={{ padding: 20 }}>
+      <StepTitleText title="Заголовок первого уровня" type='first' />
+    </div>
+    <div style={{ padding: 20 }}>
+      <StepTitleText title="Заголовок второго уровня" type='second' />
+    </div>
+    <div style={{ padding: 20 }}>
+      <StepTitleText title="Заголовок третьего уровня" type='third' />
     </div>
   </div>
 )

@@ -14,6 +14,7 @@ import styled from 'styled-components'
 
 import SliderSortBlock from './SliderSortBlock'
 import OneItemBlock from './OneListItem'
+import DndComponent from './DndComponent'
 
 import { DataProps, Props } from './types'
 
@@ -52,7 +53,7 @@ const SimpleList = ({
     setValue(output)
   }
 
-  /************************** TASKS DnD **************************/
+  /************************** DnD **************************/
   const [curr, setCurr] = useState<null | any>(null)
   const dragStartHandler = (_e: any, card: any) => {
     setCurr(card)
@@ -76,14 +77,7 @@ const SimpleList = ({
         {value &&
           value.map((item: DataProps) => (
             <Wrapper>
-              <DndComponent
-                draggable={true}
-                onDragStart={(e: any) => dragStartHandler(e, item)}
-                onDragOver={(e: any) => e.preventDefault()}
-                onDrop={(e: any) => dropHandler(e, item)}
-              >
-                <img src="/images/icons/dnd.svg" title="Переместить" alt="Переместить" />
-              </DndComponent>
+              <DndComponent item={item} funcs={{ dragStartHandler, dropHandler }} />
               <OneItemBlock
                 key={item.id}
                 item={item}
@@ -113,15 +107,4 @@ const List = styled.div`
 const Wrapper = styled.div`
   display: flex;
   align-items: flex-start;
-`
-
-const DndComponent = styled.div`
-  height: 100%;
-  padding-top: 1.25rem;
-  padding-right: 1rem;
-
-  img {
-    height: 2rem;
-    cursor: grabbing;
-  }
 `
