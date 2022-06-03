@@ -14,7 +14,6 @@ import styled from 'styled-components'
 
 import SliderSortBlock from './SliderSortBlock'
 import OneItemBlock from './OneListItem'
-import DndComponent from './DndComponent'
 
 import { DataProps, Props } from './types'
 
@@ -53,44 +52,27 @@ const SimpleList = ({
     setValue(output)
   }
 
-  /************************** DnD **************************/
-  const [curr, setCurr] = useState<null | any>(null)
-  const dragStartHandler = (_e: any, card: any) => {
-    setCurr(card)
-  }
-  const dropHandler = (e: any, card: any) => {
-    e.preventDefault()
-    const newVars = [] as DataProps[]
-    value.map((i: DataProps) => {
-      if (i === card && curr !== null) newVars.push(curr)
-      if (i !== curr) newVars.push(i)
-      return i
-    })
-    setValue(newVars)
-  }
-  /*****************************************************************/
-
   return (
     <div>
       {sort && <SliderSortBlock onChange={updateSort} />}
       <List id={listId}>
         {value &&
-          value.map((item: DataProps) => (
-            <Wrapper>
-              <DndComponent item={item} funcs={{ dragStartHandler, dropHandler }} />
-              <OneItemBlock
-                key={item.id}
-                item={item}
-                value={value}
-                setValue={setValue}
-                details={details}
-                editableTitle={editableTitle}
-                slider={slider}
-                listId={listId}
-                checkbox={checkbox}
-                displayParent={displayParent}
-              />
-            </Wrapper>
+          value.map((item: DataProps, index: number) => (
+            <OneItemBlock
+              key={item.id}
+              item={item}
+              value={value}
+              setValue={setValue}
+              details={details}
+              editableTitle={editableTitle}
+              slider={slider}
+              listId={listId}
+              checkbox={checkbox}
+              displayParent={displayParent}
+              listType="first"
+              index={index}
+              length={value.length}
+            />
           ))}
       </List>
     </div>
@@ -102,9 +84,4 @@ export default SimpleList
 const List = styled.div`
   display: flex;
   flex-direction: column;
-`
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
 `

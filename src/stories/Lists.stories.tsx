@@ -155,3 +155,33 @@ export const SimpleListWithSliderAndParents = () => {
 
   return <SimpleList listId="sinpleList" data={data} slider={true} displayParent={true} />
 }
+
+// Список второго уровня
+export const SecondLevelList = () => {
+  const data = [
+    {
+      id: '1',
+      title: 'Система управления пользователями и командами',
+      childs: [
+        {
+          id: '11',
+          title: 'Система управления пользователями',
+          childs: [
+            { id: '111', title: 'Редактор ролей пользователей' },
+            { id: '112', title: 'Добавление нового пользователя и назначение ему роли' },
+            { id: '113', title: 'Редактор списка пользователей' },
+            { id: '114', title: 'Редактор сведений о пользователе' },
+          ],
+        },
+        { id: '12', title: 'Система управления командами' },
+      ],
+    },
+    {
+      id: '2',
+      title:
+        'Система управления структурой "отраслей" (областей жизни и деятельности) и отраслевых алгоритмов (административное)',
+    },
+  ]
+
+  return <SimpleList listId="secondLevelList" data={data} />
+}

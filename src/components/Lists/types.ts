@@ -1,9 +1,18 @@
+export type MainProps = {
+  id: string
+  title: string
+  slider?: number
+  details?: string
+  parents?: string[]
+}
+
 export type DataProps = {
   id: string
   title: string
   slider?: number
   details?: string
   parents?: string[]
+  childs?: MainProps[]
 }
 
 export type Props = {
@@ -39,4 +48,7 @@ export type ItemBlockProps = {
   listId: string
   checkbox: boolean
   displayParent: boolean
+  listType?: ListTypes
+  index: number
+  length: number
 }

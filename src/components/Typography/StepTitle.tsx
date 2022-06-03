@@ -23,8 +23,8 @@ const StepTitleText = ({ title, type = 'first' }: Props) => {
 export default StepTitleText
 
 export const first = `font-size: 1.75rem; line-height: 2rem; font-weight: 500; letter-spacing: 0em;`
-export const second = `font-size: 1.5rem; line-height: 1.5rem; font-weight: 500; letter-spacing: 0em;`
-export const third = `font-size: 1.25rem; line-height: 1rem; font-weight: 500; letter-spacing: 0em;`
+export const second = `font-size: 1.5rem; line-height: 1.75rem; font-weight: 500; letter-spacing: 0em;`
+export const third = `font-size: 1.25rem; line-height: 1.5rem; font-weight: 500; letter-spacing: 0em;`
 
 export const FirstTitle = styled.div`
   ${first}

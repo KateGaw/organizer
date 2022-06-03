@@ -6,28 +6,74 @@
  *          - удалить запись
  */
 
-import React, { useState } from 'react'
+import React, { useState, createRef } from 'react'
 import styled from 'styled-components'
 
 type Props = {
   listId: string
   dataId: string
+  index: number
+  length: number
   funcs: {
     delete: (id: string) => void
     add: (id: string) => void
+    top: (index: number, id: string) => void
+    bottom: (index: number, id: string) => void
   }
 }
 
-const DetailsButton = ({ listId, dataId, funcs }: Props) => {
+const DetailsButton = ({ listId, dataId, funcs, index, length }: Props) => {
   const [displaySettings, setDisplaySettings] = useState(false)
 
   const menu = [
-    { _id: 'add', title: 'Добавить', onClick: () => funcs.add(dataId) },
-    { _id: 'delete', title: 'Удалить', onClick: () => funcs.delete(dataId) },
+    {
+      _id: 'add',
+      title: 'Добавить',
+      onClick: () => {
+        funcs.add(dataId)
+        setDisplaySettings(false)
+      },
+    },
+    {
+      _id: 'delete',
+      title: 'Удалить',
+      onClick: () => {
+        funcs.delete(dataId)
+        setDisplaySettings(false)
+      },
+    },
+    index < length - 1
+      ? {
+          _id: 'bottom',
+          title: 'Вниз',
+          onClick: () => {
+            funcs.bottom(index, dataId)
+            setDisplaySettings(false)
+          },
+        }
+      : null,
+    index > 0
+      ? {
+          _id: 'top',
+          title: 'Вверх',
+          onClick: () => {
+            funcs.top(index, dataId)
+            setDisplaySettings(false)
+          },
+        }
+      : null,
   ]
 
+  const ref = createRef() as any
+  const hideList = (e: any) => {
+    if (ref.current && !ref.current.contains(e.target) && displaySettings) {
+      setDisplaySettings(false)
+    }
+  }
+  window.addEventListener('click', hideList)
+
   return (
-    <DetailsWrapper>
+    <DetailsWrapper ref={ref}>
       <ListDetailsButton
         onClick={() => setDisplaySettings(!displaySettings)}
         src="/images/icons/settings.svg"
@@ -36,11 +82,14 @@ const DetailsButton = ({ listId, dataId, funcs }: Props) => {
       />
       {displaySettings && (
         <SettingsMenu>
-          {menu.map((i: any) => (
-            <div key={i._id} onClick={i.onClick}>
-              {i.title}
-            </div>
-          ))}
+          {menu.map(
+            (i: any) =>
+              i !== null && (
+                <div key={i._id} onClick={i.onClick}>
+                  {i.title}
+                </div>
+              )
+          )}
         </SettingsMenu>
       )}
     </DetailsWrapper>
