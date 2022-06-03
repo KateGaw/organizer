@@ -47,6 +47,7 @@ const ListTitleBlock = ({
 export default ListTitleBlock
 
 const ListTitle = styled.div`
+  width: 30rem;
   font-size: 1.5rem;
   line-height: 1.75rem;
   cursor: default;

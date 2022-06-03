@@ -3,6 +3,7 @@ export type DataProps = {
   title: string
   slider?: number
   details?: string
+  parents?: string[]
 }
 
 export type Props = {
@@ -13,6 +14,7 @@ export type Props = {
   sort?: boolean
   checkbox?: boolean
   details?: boolean
+  displayParent?: boolean
 }
 
 export type TitleBlockProps = {
@@ -33,4 +35,5 @@ export type ItemBlockProps = {
   slider: boolean
   listId: string
   checkbox: boolean
+  displayParent: boolean
 }

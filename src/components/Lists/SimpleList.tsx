@@ -9,7 +9,7 @@
  *  - чекбоксы (опционально)
  */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import DetailsButton from './DetailsButton'
@@ -30,9 +30,11 @@ const OneItemBlock = ({
   slider,
   listId,
   checkbox,
+  displayParent,
 }: ItemBlockProps) => {
   const [checked, setChecked] = useState<string[]>([])
   const [displayDetails, setDisplayDetails] = useState(false)
+  const [parents, setParents] = useState('')
 
   const simpleListOnChange = (e: any, id: string) => {
     setValue(value.map((i: any) => (i.id === id ? { ...i, title: e.target.value } : i)))
@@ -45,6 +47,12 @@ const OneItemBlock = ({
       setChecked(checked.filter((i: string) => i !== e.target.name))
     }
   }
+
+  useEffect(() => {
+    if (displayParent && item.parents) {
+      setParents(item.parents.join(' > '))
+    }
+  }, [displayParent, item])
 
   return (
     <ListItem>
@@ -85,6 +93,8 @@ const OneItemBlock = ({
           <MainText title={item?.details || '[no details]'} />
         </DetailsBlock>
       )}
+
+      {displayParent && <ParentsLine>{parents}</ParentsLine>}
     </ListItem>
   )
 }
@@ -97,6 +107,7 @@ const SimpleList = ({
   sort = false,
   checkbox = false,
   details = false,
+  displayParent = false,
 }: Props) => {
   const [value, setValue] = useState<DataProps[]>(data)
 
@@ -139,6 +150,7 @@ const SimpleList = ({
               slider={slider}
               listId={listId}
               checkbox={checkbox}
+              displayParent={displayParent}
             />
           ))}
       </List>
@@ -167,4 +179,11 @@ const CheckboxWrapper = styled.div`
 
 const DetailsBlock = styled.div`
   width: 80%;
+`
+
+const ParentsLine = styled.div`
+  max-width: 30rem;
+  padding: 0.5rem 0 1rem 2rem;
+  font-style: italic;
+  color: var(--color-secondary);
 `
