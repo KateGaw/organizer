@@ -9,95 +9,13 @@
  *  - чекбоксы (опционально)
  */
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import DetailsButton from './DetailsButton'
-import ListTitleBlock from './ListTitle'
-import SliderBlock from './Slider'
 import SliderSortBlock from './SliderSortBlock'
-import Checkbox from '../Inputs/Checkbox'
-import MainText from '../Typography/Main'
+import OneItemBlock from './OneListItem'
 
-import { DataProps, Props, ItemBlockProps } from './types'
-
-const OneItemBlock = ({
-  item,
-  value,
-  setValue,
-  details,
-  editableTitle,
-  slider,
-  listId,
-  checkbox,
-  displayParent,
-}: ItemBlockProps) => {
-  const [checked, setChecked] = useState<string[]>([])
-  const [displayDetails, setDisplayDetails] = useState(false)
-  const [parents, setParents] = useState('')
-
-  const simpleListOnChange = (e: any, id: string) => {
-    setValue(value.map((i: any) => (i.id === id ? { ...i, title: e.target.value } : i)))
-  }
-
-  const checkboxOnChange = (e: any) => {
-    if (!checked.includes(e.target.name)) {
-      setChecked([...checked, e.target.name])
-    } else {
-      setChecked(checked.filter((i: string) => i !== e.target.name))
-    }
-  }
-
-  useEffect(() => {
-    if (displayParent && item.parents) {
-      setParents(item.parents.join(' > '))
-    }
-  }, [displayParent, item])
-
-  return (
-    <ListItem>
-      <ListTitleBlock
-        item={item}
-        details={details}
-        editable={editableTitle}
-        onChange={simpleListOnChange}
-        displayDetails={displayDetails}
-        setDisplayDetails={setDisplayDetails}
-      />
-
-      {slider && (
-        <SliderBlock
-          sliderId={`slider_${item.id}`}
-          min={0}
-          max={100}
-          data={value}
-          setData={setValue}
-        />
-      )}
-
-      <DetailsButton listId={listId} dataId={item.id} />
-
-      {checkbox && (
-        <CheckboxWrapper>
-          <Checkbox
-            name={item.id}
-            label=""
-            checked={checked.includes(item.id)}
-            onChange={checkboxOnChange}
-          />
-        </CheckboxWrapper>
-      )}
-
-      {displayDetails && (
-        <DetailsBlock>
-          <MainText title={item?.details || '[no details]'} />
-        </DetailsBlock>
-      )}
-
-      {displayParent && <ParentsLine>{parents}</ParentsLine>}
-    </ListItem>
-  )
-}
+import { DataProps, Props } from './types'
 
 const SimpleList = ({
   listId,
@@ -134,24 +52,51 @@ const SimpleList = ({
     setValue(output)
   }
 
+  /************************** TASKS DnD **************************/
+  const [curr, setCurr] = useState<null | any>(null)
+  const dragStartHandler = (_e: any, card: any) => {
+    setCurr(card)
+  }
+  const dropHandler = (e: any, card: any) => {
+    e.preventDefault()
+    const newVars = [] as DataProps[]
+    value.map((i: DataProps) => {
+      if (i === card && curr !== null) newVars.push(curr)
+      if (i !== curr) newVars.push(i)
+      return i
+    })
+    setValue(newVars)
+  }
+  /*****************************************************************/
+
   return (
     <div>
       {sort && <SliderSortBlock onChange={updateSort} />}
       <List id={listId}>
         {value &&
           value.map((item: DataProps) => (
-            <OneItemBlock
-              key={item.id}
-              item={item}
-              value={value}
-              setValue={setValue}
-              details={details}
-              editableTitle={editableTitle}
-              slider={slider}
-              listId={listId}
-              checkbox={checkbox}
-              displayParent={displayParent}
-            />
+            <Wrapper>
+              <DndComponent
+                draggable={true}
+                onDragStart={(e: any) => dragStartHandler(e, item)}
+                onDragOver={(e: any) => e.preventDefault()}
+                onDrop={(e: any) => dropHandler(e, item)}
+              >
+                <img src="/images/icons/dnd.svg" title="Переместить" alt="Переместить" />
+              </DndComponent>
+              <OneItemBlock
+                key={item.id}
+                item={item}
+                value={value}
+                setValue={setValue}
+                details={details}
+                editableTitle={editableTitle}
+                slider={slider}
+                listId={listId}
+                checkbox={checkbox}
+                displayParent={displayParent}
+              />
+            </Wrapper>
           ))}
       </List>
     </div>
@@ -165,25 +110,18 @@ const List = styled.div`
   flex-direction: column;
 `
 
-const ListItem = styled.div`
+const Wrapper = styled.div`
   display: flex;
-  align-items: center;
-  flex-flow: wrap;
-  width: 100%;
-  margin: 0.625rem 0;
+  align-items: flex-start;
 `
 
-const CheckboxWrapper = styled.div`
-  margin-left: 1rem;
-`
+const DndComponent = styled.div`
+  height: 100%;
+  padding-top: 1.25rem;
+  padding-right: 1rem;
 
-const DetailsBlock = styled.div`
-  width: 80%;
-`
-
-const ParentsLine = styled.div`
-  max-width: 30rem;
-  padding: 0.5rem 0 1rem 2rem;
-  font-style: italic;
-  color: var(--color-secondary);
+  img {
+    height: 2rem;
+    cursor: grabbing;
+  }
 `
