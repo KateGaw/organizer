@@ -11,8 +11,8 @@ const SessionDescriptionText = ({ title }: Props) => {
 export default SessionDescriptionText
 
 const Component = styled.div`
-  font-size: 36px;
-  line-height: 48px;
+  font-size: 1.75rem;
+  line-height: 2rem;
   font-weight: 600;
   letter-spacing: 0em;
 `
