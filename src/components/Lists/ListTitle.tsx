@@ -53,6 +53,7 @@ export default ListTitleBlock
 
 const ListWrapper = styled.div`
   width: 30rem;
+  margin-right: 1rem;
   cursor: default;
 `
 
