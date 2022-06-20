@@ -156,8 +156,8 @@ export const SimpleListWithSliderAndParents = () => {
   return <SimpleList listId="sinpleList" data={data} slider={true} displayParent={true} />
 }
 
-// Список второго уровня
-export const SecondLevelList = () => {
+// Многоуровневый список
+export const MultiLevelList = () => {
   const data = [
     {
       id: '1',
