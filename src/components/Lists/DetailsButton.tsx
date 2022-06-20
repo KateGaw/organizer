@@ -16,7 +16,7 @@ type Props = {
   length: number
   funcs: {
     delete: (id: string) => void
-    add: (id: string) => void
+    add: null | ((id: string) => void)
     top: (index: number, id: string) => void
     bottom: (index: number, id: string) => void
   }
@@ -26,14 +26,18 @@ const DetailsButton = ({ listId, dataId, funcs, index, length }: Props) => {
   const [displaySettings, setDisplaySettings] = useState(false)
 
   const menu = [
-    {
-      _id: 'add',
-      title: 'Добавить',
-      onClick: () => {
-        funcs.add(dataId)
-        setDisplaySettings(false)
-      },
-    },
+    funcs.add !== null
+      ? {
+          _id: 'add',
+          title: 'Добавить',
+          onClick: () => {
+            if (funcs.add !== null) {
+              funcs.add(dataId)
+              setDisplaySettings(false)
+            }
+          },
+        }
+      : null,
     {
       _id: 'delete',
       title: 'Удалить',
@@ -82,14 +86,13 @@ const DetailsButton = ({ listId, dataId, funcs, index, length }: Props) => {
       />
       {displaySettings && (
         <SettingsMenu>
-          {menu.map(
-            (i: any) =>
-              i !== null && (
-                <div key={i._id} onClick={i.onClick}>
-                  {i.title}
-                </div>
-              )
-          )}
+          {menu
+            .filter((i: any) => i !== null)
+            .map((i: any) => (
+              <div key={i._id} onClick={i.onClick}>
+                {i.title}
+              </div>
+            ))}
         </SettingsMenu>
       )}
     </DetailsWrapper>

@@ -124,7 +124,7 @@ const OneItemBlock = ({
         <DetailsButton
           listId={listId}
           dataId={item.id}
-          funcs={{ delete: onDeleteAction, add: addAction, top, bottom }}
+          funcs={{ delete: onDeleteAction, add: editableTitle ? addAction : null, top, bottom }}
           index={index}
           length={length}
         />

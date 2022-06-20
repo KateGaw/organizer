@@ -64,8 +64,9 @@ const ListTitleWrapper = styled.div`
 
 const ListTitleInput = styled.textarea<{ type: ListTypes }>`
   width: 30rem;
+  margin-right: 1rem;
   padding: 0.25rem;
-  border: 0.5px solid black;
+  border: 0.5px solid #cfcfcf;
   border-radius: 0.25rem;
   background-color: transparent;
   resize: none;
