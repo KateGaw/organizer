@@ -12,14 +12,16 @@ export default css`
 
   body,
   input,
-  select {
+  select,
+  button {
     font-family: 'Nunito', sans-serif;
     font-style: normal;
     font-weight: 400;
     background: #f6f6f6;
   }
 
-  input:focus-visible {
+  input:focus-visible,
+  button:focus-visible {
     outline: none;
   }
 
