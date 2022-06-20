@@ -1,40 +1,32 @@
 import React from 'react'
-import { Meta } from '@storybook/react'
+import { Meta, Story } from '@storybook/react'
 
 import ButtonComponent from '../components/Buttons/index'
 
 export default {
   title: 'Docs / Buttons',
+  component: ButtonComponent,
+  argTypes: {
+    disabled: { type: 'boolean', defaultValue: false },
+    title: { type: 'string', defaultValue: 'Hello world' },
+    name: { type: 'string', defaultValue: 'name' },
+    type: {
+      name: 'type',
+      defaultValue: 'primary',
+      options: ['primary', 'secondary', 'tertiary', 'default'],
+      control: { type: 'inline-radio' },
+    },
+  },
 } as Meta
 
-export const Variants = () => {
-  return (
-    <div>
-      <div className="buttons">
-        <div style={{ padding: 15 }}>
-          <ButtonComponent name="primary_button" title="Primary Button" type="primary" />
-        </div>
-        <div style={{ padding: 15 }}>
-          <ButtonComponent
-            name="secondary_button"
-            title="Secondary Button"
-            type="secondary"
-          />
-        </div>
-        <div style={{ padding: 15 }}>
-          <ButtonComponent
-            name="tertiary_button"
-            title="Tertiary Button"
-            type="tertiary"
-          />
-        </div>
-        <div style={{ padding: 15 }}>
-          <ButtonComponent name="default_button" title="Default Button" type="default" />
-        </div>
-      </div>
-    </div>
-  )
-}
+const Template: Story<any> = (args: any) => (
+  <div>
+    <ButtonComponent {...args} />
+  </div>
+)
+
+export const Variants = Template.bind({})
+Variants.args = { type: 'primary' }
 
 export const Transitions = () => {
   return (

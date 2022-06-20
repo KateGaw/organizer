@@ -7,12 +7,19 @@ type Props = {
   onClick?: (e: any) => void
   title: string
   type: ButtonTypesProps
+  disabled?: boolean
   styles?: any
 }
 
-const Button = ({ name, onClick, title, type, styles }: Props) => {
+const Button = ({ name, onClick, title, type, disabled = false, styles }: Props) => {
   return (
-    <ButtonComponent name={name} onClick={onClick} styles={styles} btnType={type}>
+    <ButtonComponent
+      name={name}
+      onClick={onClick}
+      styles={styles}
+      btnType={type}
+      disabled={disabled}
+    >
       {title}
     </ButtonComponent>
   )
@@ -43,6 +50,16 @@ const ButtonComponent = styled.button<{ btnType: ButtonTypesProps; styles?: any 
 
   :hover {
     filter: brightness(85%);
+  }
+
+  :disabled {
+    color: #808080;
+    filter: brightness(100%);
+    cursor: auto;
+
+    :hover {
+      filter: none;
+    }
   }
 
   ${(props) => (props.styles ? props.styles : '')}
