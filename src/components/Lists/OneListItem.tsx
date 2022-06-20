@@ -124,7 +124,12 @@ const OneItemBlock = ({
         <DetailsButton
           listId={listId}
           dataId={item.id}
-          funcs={{ delete: onDeleteAction, add: editableTitle ? addAction : null, top, bottom }}
+          funcs={{
+            delete: onDeleteAction,
+            add: editableTitle ? addAction : null,
+            top,
+            bottom,
+          }}
           index={index}
           length={length}
         />
@@ -145,7 +150,11 @@ const OneItemBlock = ({
         )}
 
         {/* Отображение записей о родительских заголовках */}
-        {displayParent && <ParentsLine>{parents}</ParentsLine>}
+        {displayParent && (
+          <ParentsLine>
+            <div>{parents}</div>
+          </ParentsLine>
+        )}
 
         {/* Отображение текста деталей */}
         {displayDetails && (
@@ -216,8 +225,12 @@ const DetailsBlock = styled.div`
 `
 
 const ParentsLine = styled.div`
-  max-width: 30rem;
-  padding: 0.5rem 0 1rem 2rem;
-  font-style: italic;
-  color: var(--color-secondary);
+  width: 100%;
+
+  & > div {
+    max-width: 30rem;
+    padding: 0.5rem 0 1rem 2rem;
+    font-style: italic;
+    color: var(--color-secondary);
+  }
 `
